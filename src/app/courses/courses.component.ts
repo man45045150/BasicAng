@@ -17,9 +17,14 @@ import { CoursesService } from './courses.service';
         <td [attr.colspan] = "colspan"></td>
       </tr>
     </table>
-    <button class="btn btn-primary" [class.active]="isActive">Submit</button>
+    <div (click)="onDivClicked()">
+      <button class="btn btn-primary" [class.active]="isActive" (click)="onSave($event)">Submit</button>
+    </div>
     <button class="btn btn-primary" [ngClass]="{active:isActive}">Test</button>
     <button [style.background]="isActive ? 'blue':'red'">Hello</button>
+    <input #email (keyup.enter)="onKeyUp(email.value)">
+    <input [(ngModel)]="address" />
+    {{address}}
   `,
   styles: []
 })
@@ -29,6 +34,8 @@ export class CoursesComponent implements OnInit {
   imageUrl = 'http://lorempixel.com/400/200';
   courses;
   colspan = 2;
+  // two way binding FormsModule
+  address='160 Ladproa34';
   //add DOM Object
   //Class Binding
   isActive = true;
@@ -38,6 +45,18 @@ export class CoursesComponent implements OnInit {
   constructor(private service:CoursesService) {
     this.courses = this.service.getCourses();
   }
+  //event Bubbing tree
+  onDivClicked(){
+    console.log('Div was clicked');
+  }
+  onSave($event){
+    $event.stopPropagation();
+    console.log("Button was clicked",$event);
+  }
+  onKeyUp(email){
+      console.log("Enter was pressed",email);
+  }
+
 
   ngOnInit() {
     
